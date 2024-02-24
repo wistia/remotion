@@ -1,35 +1,35 @@
-import {OffthreadVideo, staticFile} from 'remotion';
-
-const getVideoPropsForFrameRange = (): {
-	src: string;
-	startFrom: number;
-	endAt: number;
-} => {
-	const frameOffset = window.remotion_initialFrame;
-	if (frameOffset >= 0 && frameOffset < 90) {
-		return {
-			src: staticFile('segmented-video-example/big-buck-bunny-input-seg-1.mkv'),
-			startFrom: 15,
-			endAt: 105,
-		};
-	}
-
-	if (frameOffset >= 90 && frameOffset < 180) {
-		return {
-			src: staticFile('segmented-video-example/big-buck-bunny-input-seg-2.mkv'),
-			startFrom: 15,
-			endAt: 105,
-		};
-	}
-
-	return {
-		src: staticFile('segmented-video-example/big-buck-bunny-input-seg-3.mkv'),
-		startFrom: 15,
-		endAt: 45,
-	};
-};
+import {OffthreadVideo, Sequence, staticFile} from 'remotion';
 
 export const SegmentedVideoExample = (): JSX.Element => {
-	const {src, startFrom, endAt} = getVideoPropsForFrameRange();
-	return <OffthreadVideo src={src} startFrom={startFrom} endAt={endAt} />;
+	return (
+		<>
+			<Sequence durationInFrames={90}>
+				<OffthreadVideo
+					src={staticFile(
+						'segmented-video-example/big-buck-bunny-input-seg-1.mkv',
+					)}
+					startFrom={15}
+					endAt={105}
+				/>
+			</Sequence>
+			<Sequence from={90} durationInFrames={90}>
+				<OffthreadVideo
+					src={staticFile(
+						'segmented-video-example/big-buck-bunny-input-seg-2.mkv',
+					)}
+					startFrom={15}
+					endAt={105}
+				/>
+			</Sequence>
+			<Sequence from={180} durationInFrames={30}>
+				<OffthreadVideo
+					src={staticFile(
+						'segmented-video-example/big-buck-bunny-input-seg-3.mkv',
+					)}
+					startFrom={15}
+					endAt={105}
+				/>
+			</Sequence>
+		</>
+	);
 };
