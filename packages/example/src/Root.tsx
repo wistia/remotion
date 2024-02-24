@@ -47,6 +47,7 @@ import {
 	schemaTestSchema,
 } from './SchemaTest';
 import {Scripts} from './Scripts';
+import {SegmentedVideoExample} from './SegmentedVideoExample/SegmentedVideoExample';
 import {WidthHeightSequences} from './Sequence/WidthHeightSequences';
 import CircleTest from './Shapes/CircleTest';
 import EllipseTest from './Shapes/EllipseTest';
@@ -331,6 +332,14 @@ export const Index: React.FC = () => {
 				/>
 			</Folder>
 			<Folder name="regression-testing">
+				<Composition
+					id="segmented-video-example"
+					component={SegmentedVideoExample}
+					width={1280}
+					height={720}
+					fps={30}
+					durationInFrames={240}
+				/>
 				<Composition
 					id="missing-img"
 					component={MissingImg}
