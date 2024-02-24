@@ -30,11 +30,17 @@ export const OffthreadVideoForRendering: React.FC<OffthreadVideoProps> = ({
 	toneMapped = true,
 	toneFrequency,
 	name,
+	ignoreFrameRange,
 	...props
 }) => {
-	const absoluteFrame = useTimelinePosition();
+	let absoluteFrame = useTimelinePosition();
+	let frame = useCurrentFrame();
 
-	const frame = useCurrentFrame();
+	if (ignoreFrameRange) {
+		absoluteFrame -= window.remotion_initialFrame;
+		frame -= window.remotion_initialFrame;
+	}
+
 	const volumePropsFrame = useFrameForVolumeProp();
 	const videoConfig = useUnsafeVideoConfig();
 	const sequenceContext = useContext(SequenceContext);

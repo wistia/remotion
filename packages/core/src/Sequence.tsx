@@ -41,6 +41,10 @@ export type SequencePropsWithoutDuration = {
 	/**
 	 * @deprecated For internal use only.
 	 */
+	shiftByInitialFrame?: boolean;
+	/**
+	 * @deprecated For internal use only.
+	 */
 	loopDisplay?: LoopDisplay;
 	/**
 	 * @deprecated For internal use only.
@@ -64,6 +68,7 @@ const SequenceRefForwardingFunction: React.ForwardRefRenderFunction<
 		height,
 		width,
 		showInTimeline = true,
+		shiftByInitialFrame,
 		loopDisplay,
 		stack,
 		...other
@@ -114,7 +119,12 @@ const SequenceRefForwardingFunction: React.ForwardRefRenderFunction<
 		);
 	}
 
-	const absoluteFrame = useTimelinePosition();
+	let absoluteFrame = useTimelinePosition();
+
+	if (shiftByInitialFrame) {
+		absoluteFrame -= window.remotion_initialFrame;
+	}
+
 	const videoConfig = useVideoConfig();
 
 	const parentSequenceDuration = parentSequence

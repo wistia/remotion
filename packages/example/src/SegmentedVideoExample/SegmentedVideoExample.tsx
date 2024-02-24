@@ -31,5 +31,12 @@ const getVideoPropsForFrameRange = (): {
 
 export const SegmentedVideoExample = (): JSX.Element => {
 	const {src, startFrom, endAt} = getVideoPropsForFrameRange();
-	return <OffthreadVideo src={src} startFrom={startFrom} endAt={endAt} />;
+	return (
+		<OffthreadVideo
+			ignoreFrameRange
+			src={src}
+			startFrom={startFrom}
+			endAt={endAt}
+		/>
+	);
 };

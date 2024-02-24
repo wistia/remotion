@@ -49,6 +49,7 @@ export type OffthreadVideoProps = {
 	transparent?: boolean;
 	toneMapped?: boolean;
 	pauseWhenBuffering?: boolean;
+	ignoreFrameRange?: boolean;
 	/**
 	 * @deprecated For internal use only
 	 */
