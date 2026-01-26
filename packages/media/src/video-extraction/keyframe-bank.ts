@@ -73,7 +73,11 @@ export const makeKeyframeBank = async ({
 		logLevel: LogLevel;
 	}) => {
 		const deletedTimestamps = [];
-		for (const frameTimestamp of frameTimestamps.slice()) {
+		const sortedTimestamps = frameTimestamps.slice().sort((a, b) => a - b);
+		for (let i = 0; i < sortedTimestamps.length; i++) {
+			const frameTimestamp = sortedTimestamps[i];
+			const nextFrameTimestamp = sortedTimestamps[i + 1];
+
 			// Don't delete the last frame, since it may be the last one in the video!
 			if (hasReachedEndOfVideo) {
 				const isLast =
@@ -84,6 +88,15 @@ export const makeKeyframeBank = async ({
 			}
 
 			if (frameTimestamp < timestampInSeconds) {
+				// For VFR videos, don't delete a frame if it's still needed to display
+				// the current timestamp. A frame "covers" all times from its timestamp
+				// until the next frame's timestamp. If there's no next frame, or if the
+				// next frame is after our threshold, this frame is still needed.
+				if (nextFrameTimestamp === undefined || nextFrameTimestamp > timestampInSeconds) {
+					console.warn("keeping frame because it may be needed for VFR video");
+					continue;
+				}
+
 				if (!frames[frameTimestamp]) {
 					continue;
 				}
